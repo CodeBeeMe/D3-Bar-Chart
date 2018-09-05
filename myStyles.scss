@@ -1,0 +1,194 @@
+/* !Date:03.09.2018 Copyright ©2018 SCSS code by Cătălin Anghel-Ursu @Madness2aMaze (https://codepen.io/Madness2aMaze)
+- All Rights Reserved!
+
+MIT License
+
+Copyright (c) 2018 Cătălin Anghel-Ursu (https://github.com/Madness2aMaze/D3-Bar-Chart)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. */
+
+@mixin radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin box-shadow-ext($x, $y, $blur, $spread, $color) {
+  -webkit-box-shadow: $x $y $blur $spread $color;
+  -moz-box-shadow: $x $y $blur $spread $color;
+  -ms-box-shadow: $x $y $blur $spread $color;
+  box-shadow: $x $y $blur $spread $color;
+}
+@mixin box-shadow-in($inset, $x, $y, $blur, $spread, $color) {
+  -webkit-box-shadow: $inset $x $y $blur $spread $color;
+  -moz-box-shadow: $inset $x $y $blur $spread $color;
+  -ms-box-shadow: $inset $x $y $blur $spread $color;
+  box-shadow: $inset $x $y $blur $spread $color;
+}
+
+body {
+  //background: linear-gradient(to right, #eef2f3, #8e9eab, #8e9eab, #eef2f3);
+  background: linear-gradient(to right, #8e9eab, #eef2f3, #eef2f3, #8e9eab);
+}
+
+.container-fluid {
+  display: flex;
+  align-items: center;  
+  flex-direction: row;
+  margin: auto;
+  margin-top: 7%;
+  transition: .3s;
+}
+
+#title {
+  display: flex;
+  //position: fixed;
+  //margin-left: 5%;
+  flex-direction: column;
+  margin: auto;
+}
+
+
+#logo {
+  display: flex;
+  flex-direction: row;
+}
+
+#dee {
+  //font-family: 'Source Sans Pro', sans-serif;
+  //font-family: 'Catamaran', sans-serif;
+  //background: #7c858e;
+  font-family: 'Expletus Sans', cursive;
+  font-size: 250px;
+  letter-spacing: -30px;
+  margin: auto;
+  color: #343a40;
+  opacity: .6;
+  //@include box-shadow-ext(0px, 8px, 10px, -6px, #111);
+}
+
+#three {
+  //background: #7c858e;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 300px;
+  margin-top: -30px;
+  color: #75aaaa;
+  z-index: -2;
+  opacity: .8;
+  //@include box-shadow-ext(0px, 8px, 10px, -6px, #111);
+}
+
+#sub {  
+  //background: #7c858e;
+  font-family: 'Expletus Sans', cursive;
+  font-size: 48px;
+  color: #343a40;
+  margin: 0 auto;
+  padding: 10px;
+  margin-top: -85px;
+  opacity: .6;
+}
+
+#chart {
+  @include radius(15px);
+  position: relative;
+  background: #343a40;
+  margin: 0 auto;
+  transition: .3s;
+  margin-left: 0px;
+  border: 2px solid #75aaaa;
+  //@include box-shadow-ext(0px, 8px, 10px, -6px, #111);
+}
+
+#chart:before, #chart:after {
+  z-index: -1;
+  position: absolute;
+  content: "";
+  bottom: 15px;
+  left: 5px;
+  width: 60%;
+  top: 85%;
+  max-width:300px;
+  background: #111;
+  -webkit-box-shadow: 0 15px 15px #222;
+  -moz-box-shadow: 0 15px 15px #222;
+  box-shadow: 0 15px 15px #222;
+  -webkit-transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  -o-transform: rotate(-3deg);
+  -ms-transform: rotate(-3deg);
+  transform: rotate(-3deg);
+}
+
+#chart:after {
+  -webkit-transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -o-transform: rotate(3deg);
+  -ms-transform: rotate(3deg);
+  transform: rotate(3deg);
+  right: 10px;
+  left: auto;
+}
+
+svg {
+  color: #baffff;
+  @include radius(15px);
+  background: #343a40;
+  z-index: -3;
+  .bar:hover {
+    fill: #baffff;
+    width: 3px;
+  }
+}
+
+#chart-title {
+  font-family: 'Expletus Sans', cursive;
+  padding-top: 20px;
+  text-align: center;
+  color: #75aaaa;
+}
+
+#nfo {
+  width: 20%;
+}
+
+@media (max-width: 1280px) {
+  .container-fluid {
+    margin-top: 0%;
+    transform: scale(.9, .9);
+    transition: .3s;
+  }
+  #chart {
+    transform: scale(.9, .9);
+    transition: .3s;
+  }
+}
+
+@media (max-width: 960px) {
+  .container-fluid {
+    margin-top: 0%;
+    transform: scale(.7, .7);
+    transition: .3s;
+  }
+  #chart {
+    transform: scale(.7, .7);
+    transition: .3s;
+  }
+}
