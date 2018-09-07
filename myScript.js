@@ -24,7 +24,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
 window.onload = () => {
-  let url ="https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json";
+  let url =
+      "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json";
   req = new XMLHttpRequest();
   req.open("GET", url, true);
   req.send();
@@ -34,9 +35,9 @@ window.onload = () => {
     console.log(json);
     console.log(dataset);
     //document.getElementById('json').innerHTML=JSON.stringify(json);
-    const w = 950;
-    const h = 600;
-    const padding = 70;
+    const width = 950;
+    const height = 600;
+    const padding = 64;
 
     d3
       .select(".container-fluid")
@@ -46,85 +47,98 @@ window.onload = () => {
       .attr("id", "logo")
       .append("h1")
       .attr("id", "dee")
-      .text("D");  
-    
+      .text("D");
+
     d3
       .select("#logo")
       .append("h1")
       .attr("id", "three")
       .text("3");
-    
+
     d3
       .select("#title")
       .append("h3")
       .attr("id", "sub")
-      .text("BAR CHART"); 
-      
+      .text("BAR CHART");
 
     d3
       .select(".container-fluid")
       .append("div")
       .attr("id", "chart")
-      .append("h2")
+      .append("h1")
       .attr("id", "chart-title")
       .text("United States GDP");
-    
+
     d3
       .select(".container-fluid")
       .append("div")
-      .attr("id", "nfo");
+      .attr("id", "nfo");  
     
-    
-    
-    const xScale = d3.scaleLinear()
-                     .domain([1947, d3.max(dataset, (d) => new Date(d[0]).getFullYear())])
-                     .range([padding, w - padding]);
-    
-    const yScale = d3.scaleLinear()
-                     .domain([0, d3.max(dataset, (d) => d[1])])
-                     .range([h - padding, padding - 40]);    
+    const xScale = d3
+    .scaleTime()
+    .domain([new Date(dataset[0][0]), d3.max(dataset, d => new Date(d[0]))])
+    .range([padding, width - padding]);
 
-    const svg = d3.select("#chart")
-                  .append("svg")
-                  .attr("width", w)
-                  .attr("height", h);
+    const yScale = d3
+    .scaleLinear()
+    .domain([0, d3.max(dataset, d => d[1])])
+    .range([height - padding, padding]);
 
+    const tooltip = d3
+    .select("#chart")    
+    .append("div")
+    .attr("id", "tooltip")    
+    .style("opacity", 0);
+
+    const svg = d3
+    .select("#chart")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);    
+    
     svg
       .selectAll("rect")
       .data(dataset)
       .enter()
       .append("rect")
       .attr("class", "bar")
-      .attr("x", (d, i) => i * 3)
-      .attr("y", (d, i) => h - d[1]/33)
-      //.attr("x", (d) => xScale(d[0]))
-      //.attr("y", (d) => yScale(d[1]))
+      .attr("data-date", d => d[0])
+      .attr("data-gdp", d => d[1])
+      .attr("x", (d, i) => padding + i * 3)
+      .attr("y", (d, i) => height - padding - d[1] / 38)
       .attr("width", 2)
-      .attr("height", (d, i) => d[1])
+      .attr("height", (d, i) => d[1] / 38)
       .attr("fill", "#75aaaa")
-      .append("title")
-      .attr("id", "tooltip")
-      .text((d) => d[0] + " $"+ d[1] + " Billion");
-    
-    svg
-      .selectAll("text")
-      .data(dataset)
-      .enter()
-      .append("text")
-      .attr("class", "tick");
-    
+      .on("mouseover", (d) => {
+      tooltip
+        .transition()
+        .duration(50)
+        .style("opacity", 0.9);
+      tooltip
+        .attr("data-date", d[0])
+        .html(d[0] + "<br/>" + "$" + d[1] + " Billion");
+    })
+      .on("mouseout", (d) => {
+      tooltip
+        .transition()
+        .duration(500)
+        .style("opacity", 0);
+    });
+
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale);
-        
+
     svg
       .append("g")
       .attr("id", "x-axis")
-      .attr("transform", "translate(0," + (h - padding) + ")")
+      .attr("class", "tick")
+      .attr("transform", "translate(0," + (height - padding) + ")")
       .call(xAxis);
-    
+
     svg
       .append("g")
       .attr("id", "y-axis")
+      .attr("class", "tick")
       .attr("transform", "translate(" + padding + ", 0)")
       .call(yAxis);
   };
